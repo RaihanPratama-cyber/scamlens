@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ScamLens — On-device-first scam detector</title>
+  <meta name="description" content="Paste a suspicious message or link. ScamLens triages it on your device with Gemini Nano 4 and only uses the cloud when you ask for a deep analysis. Built with Firebase AI Logic." />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Firebase JS SDK is loaded lazily by src/ai.js (dynamic import).
+       Without firebase-config.js the app runs in demo mode: the local
+       mock AI (src/mock-ai.js) answers instead of Gemini. -->
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://cdn.jsdelivr.net/npm/firebase@12/+esm",
+        "firebase/ai": "https://cdn.jsdelivr.net/npm/firebase@12/ai/+esm"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>ScamLens</h1>
+      <p class="tagline">Is this message a scam? Checked on your device first — the cloud only when you ask.</p>
+      <p class="status" id="nano-status">Checking on-device model…</p>
+      <p class="status" id="online-status"></p>
+      <p class="status" id="firebase-status"></p>
+    </header>
+
+    <section class="panel">
+      <label for="input">Paste a suspicious message or link</label>
+      <textarea id="input" rows="5" placeholder="Example: Selamat! Anda memenangkan undian berhadiah iPhone 15, klaim hadiah sebelum berakhir…"></textarea>
+      <div class="actions">
+        <button id="analyze" type="button" class="primary">Check message</button>
+        <button id="deep" type="button">Deep analysis (cloud)</button>
+      </div>
+      <p class="hint">Deep analysis sends the message to Gemini in the cloud — only when you tap this button.</p>
+      <div id="examples" class="chips" aria-label="Try an example"></div>
+    </section>
+
+    <section id="result" class="panel" hidden>
+      <h2 id="verdict" class="verdict low">—</h2>
+      <p id="score" class="muted"></p>
+      <p id="explanation"></p>
+      <p><strong>What to do:</strong> <span id="action"></span></p>
+      <ul id="tactics"></ul>
+      <p id="safe-reply" hidden><strong>Safe reply you can send:</strong> <span id="safe-reply-text"></span></p>
+      <p id="route" class="muted"></p>
+      <p id="privacy" class="muted"></p>
+      <p id="status" class="muted"></p>
+    </section>
+
+    <section id="history" class="panel" hidden>
+      <h2>Recent checks <button id="clear-history" type="button" class="link">clear</button></h2>
+      <ul id="history-list"></ul>
+      <p class="muted">History lives only in this browser (localStorage). Nothing is uploaded.</p>
+    </section>
+
+    <footer>
+      <p class="muted">ScamLens is a screening aid, not a legal verdict. When in doubt: don't click, don't transfer, verify through the official app or website. Built for #BuildHybridAI 2026 with Firebase AI Logic — on-device Gemini Nano 4 first, cloud Gemini only on request. All example messages are synthetic.</p>
+    </footer>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
